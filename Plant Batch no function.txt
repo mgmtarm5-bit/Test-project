@@ -1,0 +1,38 @@
+//update Batch No
+deliveryData = Delivery_Request_Items[ID = input.Delivery_No];
+plantno = Plants[ID = deliveryData.Plant_No1];
+BatchData = Delivery_Request_Items[Plant_No1 = deliveryData.Plant_No1 && Delivered_Date_Time != null] sort by Batch_No_Plant_Wise desc;
+if(BatchData.Batch_No_Plant_Wise = null)
+{
+	if(plantno.Plant_No = "Plant1")
+	{
+		BatchNumber = 114502;
+	}
+	else if(plantno.Plant_No = "Plant2")
+	{
+		BatchNumber = 190267;
+	}
+	else if(plantno.Plant_No = "Plant3")
+	{
+		BatchNumber = 128554;
+	}
+	else if(plantno.Plant_No = "Plant4")
+	{
+		BatchNumber = 105322;
+	}
+}
+else 
+{
+	BatchNumber = BatchData.Batch_No_Plant_Wise.toLong() + 1;
+}
+deliveryData.Batch_No_Plant_Wise=BatchNumber;
+//update delivery ticket no
+TicketData = Delivery_Request_Items[Status = "Delivered"] sort by Delivery_Ticket_No desc;
+if(TicketData.Delivery_Ticket_No = null)
+{
+	deliveryData.Delivery_Ticket_No=158942;
+}
+else
+{
+	deliveryData.Delivery_Ticket_No=TicketData.Delivery_Ticket_No + 1;
+}
